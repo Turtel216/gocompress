@@ -33,7 +33,7 @@ func RLE_compress(str string) string {
 			// Compress duplicates
 			if prev_char != _char && duplicate_number != 0 {
 				// Replace first duplicate
-				str = str[:first_duplicate] + string('0'+duplicate_number) + str[:first_duplicate+1]
+				str = str[:first_duplicate] + fmt.Sprint('0'+duplicate_number) + str[:first_duplicate+1]
 
 				// Remove all duplicates
 				str = str[:first_duplicate+2] + str[:i-1]
