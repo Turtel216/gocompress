@@ -59,6 +59,14 @@ func RLE_compress(str string) string { //TODO fixe issue when duplicates are on 
 		prev_char = _char
 	}
 
+	if duplicate_number != 0 {
+		// Added previous duplicate
+		duplicate_number++
+
+		// Replace first duplicate and remove the rest of the duplicates
+		str = str[:first_duplicate+offset] + fmt.Sprint(duplicate_number) + string(prev_char)
+	}
+
 	// Return compressed string
 	return str
 }
