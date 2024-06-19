@@ -5,5 +5,6 @@
 ## Features
 
 - Run-lenght compression 
-- LZW encoding(currently working)
+- LZW compression
+- Huffman compression(currently being worked on)
 - **More will be implemented soon!!!**
