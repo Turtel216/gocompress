@@ -40,3 +40,14 @@ func TestLZW_decompression(t *testing.T) {
 		}
 	}
 }
+
+func TestLZW_lossless_compression(t *testing.T) {
+	test_input := "In a hole in the ground there lived a hobbit"
+
+	test_output := LZW_decompression(LZW_encoding(test_input))
+
+	if test_input != test_output {
+		t.Error("LZW compression was not lossless. For the input: " +
+			test_input + " the output was: " + test_output)
+	}
+}
