@@ -1,6 +1,10 @@
 package gocompress
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"unicode"
+)
 
 /*
 Lossless compression using the Run-length encoding algorithm.
@@ -77,11 +81,43 @@ with the Run-length encoding algorithm
 */
 func RLE_decompress(str string) string {
 	var offset int = 0 // adjusts index to changes made
+	var prev_char rune
 
 	// Iterate over the string
 	for i, _char := range str {
+		if prev_char != 0 { // skip first iteration
+			// if the char is a number,
+			// add this number duplicates of the following char
+			if unicode.IsNumber(prev_char) {
+				// convert char to int
+				digit, _ := strconv.Atoi(string(prev_char))
+				// add the duplcicates to the string
+				str = str[:i-1+offset] + getDuplicatesString(digit, _char) + str[i+1+offset:]
 
+				// Calculate offset
+				offset = offset + digit - 2
+				prev_char = _char
+			}
+
+			prev_char = _char
+		}
+
+		prev_char = _char
 	}
 
 	return str
+}
+
+// Helper function that returns a string with the given rune,
+// repeat a 'number' of time
+func getDuplicatesString(number int, _char rune) string {
+	var new_str string        // the string to be returned
+	str_char := string(_char) // the char converted to string
+
+	// Create a string with the duplicates
+	for i := 0; i < number; i++ {
+		new_str = new_str + str_char
+	}
+
+	return new_str
 }
