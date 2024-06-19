@@ -3,6 +3,7 @@ package gocompress
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"unicode"
 )
 
@@ -91,15 +92,18 @@ func RLE_decompress(str string) string {
 			if unicode.IsNumber(prev_char) {
 				// convert char to int
 				digit, _ := strconv.Atoi(string(prev_char))
+
 				// add the duplcicates to the string
 				str = str[:i-1+offset] + getDuplicatesString(digit, _char) + str[i+1+offset:]
 
 				// Calculate offset
 				offset = offset + digit - 2
 				prev_char = _char
+				continue
 			}
 
 			prev_char = _char
+			continue
 		}
 
 		prev_char = _char
@@ -108,16 +112,13 @@ func RLE_decompress(str string) string {
 	return str
 }
 
-// Helper function that returns a string with the given rune,
-// repeat a 'number' of time
-func getDuplicatesString(number int, _char rune) string {
+// Helper function that returns n number of repeats of the given rune
+func getDuplicatesString(n int, _char rune) string {
 	var new_str string        // the string to be returned
 	str_char := string(_char) // the char converted to string
 
-	// Create a string with the duplicates
-	for i := 0; i < number; i++ {
-		new_str = new_str + str_char
-	}
+	// Create string with duplicates
+	new_str = strings.Repeat(str_char, n)
 
 	return new_str
 }
