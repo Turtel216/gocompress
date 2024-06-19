@@ -5,5 +5,5 @@
 ## Features
 
 - Run-lenght compression 
-- Huffman encoding
-
+- Huffman encoding(currently working)
+- More will be implemented soon
