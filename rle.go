@@ -76,9 +76,11 @@ Decompress a string that has been compressed
 with the Run-length encoding algorithm
 */
 func RLE_decompress(str string) string {
+	var offset int = 0 // adjusts index to changes made
+
 	// Iterate over the string
 	for i, _char := range str {
-		fmt.Println(_char, i)
+
 	}
 
 	return str
