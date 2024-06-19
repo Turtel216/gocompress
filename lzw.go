@@ -44,3 +44,39 @@ func LZW_encoding(str string) []int {
 
 	return output_code
 }
+
+// Function to decompress a string that has been compressed using LZW encoding
+func LZW_decompression(encoded_input []int) string {
+	// dictionery mapping longest encountered words and a list of codes
+	table := make(map[int]string)
+
+	// Initialize table
+	for i := 0; i <= 255; i++ {
+		table[i] = string(rune(i))
+	}
+
+	var old int = encoded_input[0]
+	var _new int
+	var s string = table[old]
+	var c string = ""
+	c += string(s[0])
+	var count int = 256
+
+	for i := 0; i < len(encoded_input); i++ {
+		_new = encoded_input[i+1]
+		if _, ok := table[_new]; ok {
+			s = table[old]
+			s = s + c
+		} else {
+			s = table[_new]
+		}
+
+		c = ""
+		c += string(s[0])
+		table[count] = table[old] + c
+		count++
+		old = _new
+	}
+
+	return s
+}
