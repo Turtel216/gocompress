@@ -6,9 +6,9 @@ import (
 )
 
 func TestLZW_encoding(t *testing.T) {
-	test_input := "geekific-geekific"
+	test_input := "Hello there"
 	var test_expected_output []int
-	test_expected_output = []int{103, 101, 101, 107, 105, 102, 105, 99, 45, 256, 258, 260, 262}
+	test_expected_output = []int{72, 101, 108, 108, 111, 32, 116, 104, 101, 114, 101}
 
 	test_output := LZW_encoding(test_input)
 
@@ -19,5 +19,4 @@ func TestLZW_encoding(t *testing.T) {
 				". Expected output was: " + fmt.Sprint(test_expected_output[i]))
 		}
 	}
-
 }
