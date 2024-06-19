@@ -58,19 +58,22 @@ func LZW_decompression(encoded_input []int) string {
 	var old int = encoded_input[0]
 	var _new int
 	var s string = table[old]
-	var c string = ""
+	c := ""
 	c += string(s[0])
 	var count int = 256
+	var decoded_str string = ""
+	decoded_str += s
 
 	for i := 0; i < len(encoded_input)-1; i++ {
 		_new = encoded_input[i+1]
-		if _, ok := table[_new]; ok {
-			s = table[old]
-			s = s + c
+
+		if _, ok := table[_new]; !ok {
+			s = table[old] + string(c[0])
 		} else {
 			s = table[_new]
 		}
 
+		decoded_str += s
 		c = ""
 		c += string(s[0])
 		table[count] = table[old] + c
@@ -78,5 +81,5 @@ func LZW_decompression(encoded_input []int) string {
 		old = _new
 	}
 
-	return s
+	return decoded_str
 }
