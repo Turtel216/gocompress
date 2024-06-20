@@ -2,7 +2,7 @@ package gocompress
 
 // Function to encode string using LWZ encoding
 func LZW_encoding(str string) []int {
-	// dictionery mapping longest encountered words and a list of codes
+	// Map to store code-to-string mappings
 	table := make(map[string]int)
 
 	// Initialize table
@@ -32,10 +32,13 @@ func LZW_encoding(str string) []int {
 			// add the code to the map
 			table[prev+curr] = code
 
+			// Update to next avaible code
 			code++
+			// Update previous character for next iteration
 			prev = curr
 		}
 
+		// Reset current
 		curr = ""
 	}
 
@@ -47,7 +50,7 @@ func LZW_encoding(str string) []int {
 
 // Function to decompress a string that has been compressed using LZW encoding
 func LZW_decompression(encoded_input []int) string {
-	// dictionery mapping longest encountered words and a list of codes
+	// Map to store code-to-string mappings
 	table := make(map[int]string)
 
 	// Initialize table
@@ -55,29 +58,42 @@ func LZW_decompression(encoded_input []int) string {
 		table[i] = string(rune(i))
 	}
 
-	var old int = encoded_input[0]
-	var _new int
-	var s string = table[old]
-	c := ""
-	c += string(s[0])
-	var count int = 256
-	var decoded_str string = ""
-	decoded_str += s
+	var old int = encoded_input[0]  // code for the previous string
+	var _new int                    // code for the current element
+	var tmp_str string = table[old] // Decoded string base on the previous string
+	curr := ""                      // String to be built for the current code
+	curr += string(tmp_str[0])
+	var count int = 256         // Next availbe code for new strings
+	var decoded_str string = "" // The decoded string that will be returned
+	decoded_str += tmp_str      // add the first decoded character
 
+	// Iterate through the encoded sequence until the second to last element
 	for i := 0; i < len(encoded_input)-1; i++ {
+		// update current code
 		_new = encoded_input[i+1]
 
+		// handle new code not in the table yet
 		if _, ok := table[_new]; !ok {
-			s = table[old] + string(c[0])
+			// combine previous string with first character of current node
+			tmp_str = table[old] + string(curr[0])
 		} else {
-			s = table[_new]
+			// Existing code found in the table, use its corresponding  string
+			tmp_str = table[_new]
 		}
 
-		decoded_str += s
-		c = ""
-		c += string(s[0])
-		table[count] = table[old] + c
+		// Update output string
+		decoded_str += tmp_str
+
+		// Reset the string to be built
+		curr = ""
+		curr += string(tmp_str[0])
+
+		// Add a new entry to the table with next code and combined string
+		table[count] = table[old] + curr
+
+		// Update to next avaible code
 		count++
+		// Update the previous code to the current code
 		old = _new
 	}
 
