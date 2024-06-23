@@ -1,8 +1,9 @@
 package gocompress
 
 import (
-	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLZW_encoding(t *testing.T) {
@@ -12,13 +13,7 @@ func TestLZW_encoding(t *testing.T) {
 
 	test_output := LZW_encoding(test_input)
 
-	for i, value := range test_output {
-		if test_expected_output[i] != test_output[i] {
-			t.Error("Failted LZW encoding on: " + fmt.Sprint(test_input[i]) +
-				". Output was: " + fmt.Sprint(value) +
-				". Expected output was: " + fmt.Sprint(test_expected_output[i]))
-		}
-	}
+	assert.Equal(t, test_output, test_expected_output)
 }
 
 func TestLZW_decompression(t *testing.T) {
@@ -28,17 +23,7 @@ func TestLZW_decompression(t *testing.T) {
 
 	test_output := LZW_decompression(test_input)
 
-	if len(test_output) != len(test_expected_output) {
-		t.Error("Output is not the same length as the expected output\n The the output was: " +
-			test_output + "The expected output was: " + test_expected_output)
-	} else {
-		for i, value := range test_output {
-			if test_expected_output[i] != test_output[i] {
-				t.Error("Failted LZW decompression on:\n" + ". Output was: " + string(value) +
-					". Expected output was: " + string(test_expected_output[i]))
-			}
-		}
-	}
+	assert.Equal(t, test_output, test_expected_output)
 }
 
 func TestLZW_lossless_compression(t *testing.T) {
@@ -46,8 +31,5 @@ func TestLZW_lossless_compression(t *testing.T) {
 
 	test_output := LZW_decompression(LZW_encoding(test_input))
 
-	if test_input != test_output {
-		t.Error("LZW compression was not lossless. For the input: " +
-			test_input + " the output was: " + test_output)
-	}
+	assert.Equal(t, test_output, test_input)
 }
